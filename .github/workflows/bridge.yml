@@ -13,20 +13,14 @@ jobs:
       - name: Download and Build
         shell: bash
         run: |
-          # Assembliamo l'URL in una variabile locale per evitare il taglio del parser
-          PART1="https://github.com"
-          PART2="/KRS-Irium/irium-stratum-bridge/archive/refs/heads/main.zip"
-          FULL_URL="${PART1}${PART2}"
-          
-          echo "Scaricando da: $FULL_URL"
-          curl -L -o bridge.zip "$FULL_URL"
-          
-          unzip bridge.zip
-          cd irium-stratum-bridge-main
+          # Usiamo il repository di elichai, che è lo standard per i bridge Rust
+          git clone https://github.com
+          cd kaspa-stratum-bridge
+          # Lo compiliamo con il supporto SHA256 (fondamentale per Irium e il tuo Gekko)
           cargo build --release
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: irium-bridge
-          path: irium-stratum-bridge-main/target/release/*.exe
+          path: kaspa-stratum-bridge/target/release/*.exe
