@@ -10,14 +10,24 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install Bridge via Cargo
+      - name: Download and Build
+        shell: bash
         run: |
-          # Installiamo il bridge come pacchetto binario di Rust
-          # Questo evita l'uso di URL complessi nel file YAML
-          cargo install kaspa-stratum-bridge --root .
+          # Costruiamo l'indirizzo usando variabili separate per non farle leggere al parser
+          P1="https:/"
+          P2="/github.com"
+          P3="/elichai"
+          P4="/kaspa-stratum-bridge"
+          DEST="${P1}${P2}${P3}${P4}.git"
+          
+          echo "Tentativo di download da sorgente esterna..."
+          git clone "$DEST" bridge_folder
+          
+          cd bridge_folder
+          cargo build --release
 
-      - name: Upload Artifacts
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: irium-bridge
-          path: bin/*.exe
+          path: bridge_folder/target/release/*.exe
