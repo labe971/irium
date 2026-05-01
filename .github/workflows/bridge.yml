@@ -10,15 +10,14 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Build Bridge
+      - name: Clone and Build
         run: |
-          # Cloniamo il bridge aggiornato direttamente qui
           git clone https://github.com
-          cd kaspa-stratum-bridge
+          cd irium-stratum-bridge
           cargo build --release
 
-      - name: Upload Artifacts
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: irium-bridge
-          path: kaspa-stratum-bridge/target/release/*.exe
+          path: irium-stratum-bridge/target/release/*.exe
