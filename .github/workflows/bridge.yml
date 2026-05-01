@@ -11,9 +11,8 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Clone and Build
-        shell: bash
         run: |
-          git clone https://github.com
+          git clone "https://github.com"
           cd irium-stratum-bridge
           cargo build --release
 
@@ -21,4 +20,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: irium-bridge
-          path: irium-stratum-bridge/target/release/*.
+          path: irium-stratum-bridge/target/release/*.exe
