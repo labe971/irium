@@ -3,8 +3,6 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: windows-latest
-    env:
-      REPO_URL: "https://github.com"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -12,14 +10,15 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Clone and Build
+      - name: Download and Build
         run: |
-          git clone $env:REPO_URL
-          cd irium-stratum-bridge
+          curl -L -o bridge.zip https://github.com
+          tar -xf bridge.zip
+          cd irium-stratum-bridge-main
           cargo build --release
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: irium-bridge
-          path: irium-stratum-bridge/target/release/*.exe
+          path: irium-stratum-bridge-main/target/release/*.exe
