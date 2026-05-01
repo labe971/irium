@@ -10,17 +10,14 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Download and Build
-        shell: bash
+      - name: Install Bridge via Cargo
         run: |
-          # Usiamo il repository di elichai, che è lo standard per i bridge Rust
-          git clone https://github.com
-          cd kaspa-stratum-bridge
-          # Lo compiliamo con il supporto SHA256 (fondamentale per Irium e il tuo Gekko)
-          cargo build --release
+          # Installiamo il bridge come pacchetto binario di Rust
+          # Questo evita l'uso di URL complessi nel file YAML
+          cargo install kaspa-stratum-bridge --root .
 
-      - name: Upload
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: irium-bridge
-          path: kaspa-stratum-bridge/target/release/*.exe
+          path: bin/*.exe
