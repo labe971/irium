@@ -3,6 +3,8 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      REPO_URL: "https://github.com"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -12,7 +14,7 @@ jobs:
 
       - name: Clone and Build
         run: |
-          git clone "https://github.com"
+          git clone $env:REPO_URL
           cd irium-stratum-bridge
           cargo build --release
 
