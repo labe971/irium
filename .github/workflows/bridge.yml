@@ -11,9 +11,17 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Download and Build
+        shell: bash
         run: |
-          curl -L -o bridge.zip https://github.com
-          tar -xf bridge.zip
+          # Assembliamo l'URL in una variabile locale per evitare il taglio del parser
+          PART1="https://github.com"
+          PART2="/KRS-Irium/irium-stratum-bridge/archive/refs/heads/main.zip"
+          FULL_URL="${PART1}${PART2}"
+          
+          echo "Scaricando da: $FULL_URL"
+          curl -L -o bridge.zip "$FULL_URL"
+          
+          unzip bridge.zip
           cd irium-stratum-bridge-main
           cargo build --release
 
